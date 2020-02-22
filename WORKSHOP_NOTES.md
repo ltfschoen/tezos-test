@@ -48,3 +48,9 @@
   * Upgradability
   * Arbitrary Code Execution
   * Lambda Storage
+
+* Interaction Patterns
+  * Ping
+  * Invoke
+  * Fund - Contracts cannot do anything with funds held in them by themselves
+  * Chain
