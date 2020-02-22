@@ -1,0 +1,26 @@
+{
+    "name": "tezos-workflow-test",
+    "version": "0.0.5",
+    "description": "Integrated Tezos Workflow Test",
+    "main": "index.ts",
+    "scripts": {
+        "postinstall": "npm run build",
+        "build": "tsc index.ts",
+        "start": "node index.js"
+    },
+    "author": "anonymoussprocket",
+    "license": "UNLICENSED",
+    "engines": {
+        "node": ">=12.14.1",
+        "npm": ">=6.13.4"
+    },
+    "homepage": "https://gist.github.com/anonymoussprocket",
+    "dependencies": {
+        "conseiljs": "0.4.0-alpha.4",
+        "dotenv": "^8.2.0",
+        "glob": "^7.1.6"
+    },
+    "devDependencies": {
+        "typescript": "3.7.5"
+    }
+}
