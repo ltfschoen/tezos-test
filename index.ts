@@ -195,7 +195,9 @@ async function deployMichelsonContract(): Promise<string> {
 
     const fee = Number((await TezosConseilClient.getFeeStatistics(conseilServer, conseilServer.network, OperationKindType.Origination))[0]['high']);
 
-    const nodeResult = await TezosNodeWriter.sendContractOriginationOperation(tezosNode, keystore, 0, undefined, fee, '', 1000, 100000, contract, storage, TezosParameterFormat.Michelson);
+    const derivationPathForLedgerDevices = '';
+    const storageCost = undefined;
+    const nodeResult = await TezosNodeWriter.sendContractOriginationOperation(tezosNode, keystore, 0, storageCost, fee, derivationPathForLedgerDevices, 1000, 100000, contract, storage, TezosParameterFormat.Michelson);
     const groupid = clearRPCOperationGroupHash(nodeResult['operationGroupID']);
     console.log(`Injected origination operation with ${groupid}`);
 
@@ -212,10 +214,12 @@ async function invokeContract(address: string, parameter: string, entrypoint: st
     let storageResult = await TezosNodeReader.getContractStorage(tezosNode, address);
     console.log(`initial storage: ${JSON.stringify(storageResult)}`);
 
-    const { gas, storageCost: freight } = await TezosNodeWriter.testContractInvocationOperation(tezosNode, 'main', keystore, address, 10000, fee, '', 1000, 100000, entrypoint, parameter, TezosParameterFormat.Micheline);
+    const derivationPathForLedgerDevices = '';
+    const storageCost = 10000;
+    const { gas, storageCost: freight } = await TezosNodeWriter.testContractInvocationOperation(tezosNode, 'main', keystore, address, storageCost, fee, derivationPathForLedgerDevices, 1000, 100000, entrypoint, parameter, TezosParameterFormat.Micheline);
 
-    console.log(`cost: ${JSON.stringify(await TezosNodeWriter.testContractInvocationOperation(tezosNode, 'main', keystore, address, 10000, fee, '', 1000, 100000, entrypoint, parameter, TezosParameterFormat.Micheline))}`)
-    const nodeResult = await TezosNodeWriter.sendContractInvocationOperation(tezosNode, keystore, address, 10000, fee, '', freight, gas, entrypoint, parameter, TezosParameterFormat.Micheline);
+    console.log(`cost: ${JSON.stringify(await TezosNodeWriter.testContractInvocationOperation(tezosNode, 'main', keystore, address, storageCost, fee, derivationPathForLedgerDevices, 1000, 100000, entrypoint, parameter, TezosParameterFormat.Micheline))}`)
+    const nodeResult = await TezosNodeWriter.sendContractInvocationOperation(tezosNode, keystore, address, storageCost, fee, derivationPathForLedgerDevices, freight, gas, entrypoint, parameter, TezosParameterFormat.Micheline);
 
     const groupid = clearRPCOperationGroupHash(nodeResult.operationGroupID);
     console.log(`Injected transaction(invocation) operation with ${groupid}`);
